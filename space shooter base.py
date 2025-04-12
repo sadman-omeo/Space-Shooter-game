@@ -246,4 +246,26 @@ def draw_mpc_circle(x_c, y_c, r, color):
             x += 1
             y -= 1
         draw_circle_points(x_c, y_c, x, y, color)  
-  
+
+
+def draw_restart_button():
+    color = (0, 0, 1)
+    draw_mpl_line(10, 470, 30, 470, color)
+    draw_mpl_line(10, 470, 20, 480, color)
+    draw_mpl_line(10, 470, 20, 460, color)  
+
+def draw_play_pause_button():
+    color = (1, 1, 0)
+    draw_mpl_line(245, 480, 245, 460, color)
+    draw_mpl_line(245, 480, 255, 470, color)
+    draw_mpl_line(245, 460, 255, 470, color)
+    
+def draw_exit_button():
+    color = (1, 0, 0)
+    draw_mpl_line(470, 480, 490, 460, color)
+    draw_mpl_line(470, 460, 490, 480, color)
+    
+def draw_buttons():
+    draw_restart_button()
+    draw_play_pause_button()
+    draw_exit_button()
