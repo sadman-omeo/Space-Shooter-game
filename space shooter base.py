@@ -482,5 +482,16 @@ def mouseListener(button, state, x, y):
         print(f"Goodbye! Final Score: {score}!")
         glutLeaveMainLoop()
     
+
     
-    
+glutInit()
+glutInitDisplayMode( GLUT_RGBA)
+glutInitWindowSize(500, 500) #window size
+glutInitWindowPosition(0, 0)
+wind = glutCreateWindow(b"Game: Shoot The Circle") #window name
+glutDisplayFunc(showScreen)
+glutIdleFunc(animate)
+glutKeyboardFunc(KeyboardListener)
+glutMouseFunc(mouseListener)
+
+glutMainLoop()
