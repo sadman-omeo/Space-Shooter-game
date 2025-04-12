@@ -177,3 +177,40 @@ def convert_to_others(x, y, zone):
     if zone == 7:
         return x, -y
   
+
+
+def draw_mpl_line(x1, y1, x2, y2, color = (1.0, 1.0, 1.0)):
+    
+    dx = x2 - x1
+    dy = y2 - y1
+    zone = FindZone(dx, dy)
+    x1, y1 = convert_to_zone_0(x1, y1, zone)
+    x2, y2 = convert_to_zone_0(x2, y2, zone)
+    if x1 > x2: 
+        x1, x2 = x2, x1
+        y1, y2 = y2, y1
+    dx = x2 - x1
+    dy = y2 - y1
+    
+    d = 2*dy - dx
+    dE = 2*dy
+    dNE = 2*(dy - dx)
+    
+    glPointSize(2)
+    glColor3fv(color)
+    glBegin(GL_POINTS)
+    x, y = x1, y1
+    while x <= x2:
+        # Convert back to original zone
+        x_plot, y_plot = convert_to_others(x, y, zone)
+        glVertex2f(x_plot, y_plot)
+
+        if d <= 0:
+            d += dE
+        else:
+            d += dNE
+            y += 1
+        x += 1
+
+    glEnd()
+            
