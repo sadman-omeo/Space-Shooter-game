@@ -214,3 +214,36 @@ def draw_mpl_line(x1, y1, x2, y2, color = (1.0, 1.0, 1.0)):
 
     glEnd()
             
+
+def draw_circle_points(x_c, y_c, x, y, color):
+    
+    glColor3fv(color)
+    glBegin(GL_POINTS)
+    glVertex2f(x_c + x, y_c + y)
+    glVertex2f(x_c + x, y_c - y)
+    glVertex2f(x_c - x, y_c + y)
+    glVertex2f(x_c - x, y_c - y)
+    glVertex2f(x_c + y, y_c + x)
+    glVertex2f(x_c + y, y_c - x)
+    glVertex2f(x_c - y, y_c + x)
+    glVertex2f(x_c - y, y_c - x)
+    glEnd()
+    
+    
+
+def draw_mpc_circle(x_c, y_c, r, color):
+    x = 0
+    y = r
+    d = 1 - r
+    color = color
+    draw_circle_points(x_c,  y_c, x, y, color)
+    while x < y:
+        if d < 0:
+            d = d + 2*x + 3
+            x += 1
+        else:
+            d = d + 2*x - 2*y + 5
+            x += 1
+            y -= 1
+        draw_circle_points(x_c, y_c, x, y, color)  
+  
