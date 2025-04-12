@@ -75,3 +75,34 @@ def draw_falling_circle():
             draw_mpc_circle(c.x, c.y, c.rad, (1, 0, 0))
         
         
+
+#Render the spaceship
+def draw_spaceship(x, y, width, height):
+    colorb = (0, 0, 1)
+    colorg = (0, 1, 0)
+    colorr = (1, 0, 0)
+    draw_mpl_line(x, y, x - width // 2, y - height // 3, colorb)
+    draw_mpl_line(x, y, x + width // 2, y - height // 3, colorb)
+    draw_mpl_line(x - width // 2, y - height // 3,x + width // 2, y - height // 3, colorb)
+    draw_mpl_line(x - width // 2, y - height // 3, x - width // 2, y - 40, colorb)
+    draw_mpl_line(x + width // 2, y - height // 3, x + width // 2, y - 40,colorb )
+    draw_mpl_line(x - width // 2, y - 40 ,  x + width // 2, y - 40, colorb)
+    draw_mpl_line(x - width // 2, y - height // 2 + 3, x - width // 2 - 8, y - height // 2 - 8,colorb)
+    draw_mpl_line(x - width // 2, y - height // 2 - 5, x - width // 2 - 8, y - height // 2 - 8,colorb)
+    draw_mpl_line(x + width // 2, y - height // 2 + 3, x + width // 2 + 8, y - height // 2 - 8,colorb)
+    draw_mpl_line(x + width // 2, y - height // 2 - 5, x + width // 2 + 8, y - height // 2 - 8,colorb)
+    
+    draw_mpl_line(x - width // 2 + 2, y - 40, x - width // 2 + 2, y - 50, colorr)
+    draw_mpl_line(x, y - 40, x, y - 50, colorr)
+    draw_mpl_line(x + width // 2 - 2, y - 40, x + width // 2 - 2, y - 50, colorr)
+    
+    draw_mpc_circle(x, y, 3, (1, 0, 0))
+
+
+#Point Draw
+def draw_points(x, y):
+    glPointSize(2) #pixel size. by default 1 thake
+    glBegin(GL_POINTS)
+    glVertex2f(x,y) #point location
+    glEnd()
+
