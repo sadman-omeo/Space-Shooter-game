@@ -392,3 +392,95 @@ def animate():
     
 
 
+def KeyboardListener(key, x, y):
+
+    global spaceship_x
+    global spaceship_width
+    global fireballs
+    
+    
+    if key == b'a':
+        if spaceship_x - spaceship_width // 2 - 8 < 0:
+            spaceship_x = 0 + spaceship_width // 2 
+        else:
+            spaceship_x -= spaceship_speed
+    
+    elif key == b'd':
+        if spaceship_x + spaceship_width // 2 + 8 > 500:
+            spaceship_x = 500 - spaceship_width // 2
+        else:
+            spaceship_x += spaceship_speed
+    
+    elif key == b' ':
+        fireball = {'x' : spaceship_x, 'y' : spaceship_y, 'rad' : 4, 'speed' : 1}
+        fireballs.append(fireball)
+        
+    glutPostRedisplay()
+    
+
+
+def is_inside_button(x, y, boundary):
+    x1, x2, y1, y2 = boundary
+    if x > x1 and x < x2 and y > y1 and y < y2:
+        return True
+   
+
+def mouseListener(button, state, x, y):
+    global game_pause
+    global score
+    global falling_circles
+    global fireballs
+    global spaceship_x
+    global spaceship_y 
+    global spaceship_height
+    global spaceship_width
+    global spaceship_speed
+    global circle_speed
+    global missed_circles
+    global missed_fireballs
+    global game_over
+    
+    y = 500 - y
+    
+    
+    if button == GLUT_LEFT_BUTTON and state == GLUT_DOWN:
+        if is_inside_button(x, y, (10, 30, 460, 480)):
+            print("Starting Over!")
+        
+            spaceship_x = 250
+            spaceship_y = 60
+            spaceship_width = 20
+            spaceship_height = 50
+            spaceship_speed = 10
+            fireballs = []
+
+            falling_circles = []
+            circle_rad = 20
+            circle_speed = 0.05
+
+            missed_circles = 0
+            missed_fireballs = 0
+            score = 0
+            falling_speed = 5
+
+            #Buttons VArs
+            game_pause = False
+            game_over = False
+            print("Game Restarted!")
+    
+    elif is_inside_button(x, y, [245, 255, 460, 480]):
+        if game_pause == True:
+            print("Resuming the Game!")
+            game_pause = False
+        else:
+            print("Game Paused!")
+            game_pause = True
+            
+     
+    
+    elif is_inside_button(x, y, [470, 490, 460, 480]):
+        print(f"Goodbye! Final Score: {score}!")
+        glutLeaveMainLoop()
+    
+    
+    
