@@ -269,3 +269,126 @@ def draw_buttons():
     draw_restart_button()
     draw_play_pause_button()
     draw_exit_button()
+
+
+def showScreen():
+    
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+    glLoadIdentity()
+    iterate()
+    glColor3f(1.0, 1.0, 1.0) #konokichur color set (RGB)
+    #call the draw methods here
+    draw_spaceship(spaceship_x, spaceship_y, spaceship_width, spaceship_height)
+    draw_falling_circle()
+    
+    draw_buttons()
+    glutSwapBuffers()
+    
+
+def has_collided(box1, box2):
+    return (
+        box1['x'] < box2['x'] + box2['width'] and
+        box1['x'] + box1['width'] > box2['x'] and
+        box1['y'] < box2['y'] + box2['height'] and
+        box1['y'] + box1['height'] > box2['y']
+    )
+
+
+def animate():
+    
+    global fireballs
+    global falling_circles
+    global falling_speed
+    global score
+    global missed_circles
+    global circle_rad
+    global missed_fireballs
+    global game_pause
+  
+    
+    if game_pause == True:
+        return
+    
+    
+    
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+    glLoadIdentity()
+    iterate()
+    
+    #Spaceship and falling circle colide
+    spaceship_box = {'x': spaceship_x - spaceship_width // 2, 'y': spaceship_y - spaceship_height // 2 - 20, 'width': spaceship_width, 'height': spaceship_height}
+    
+    for fc in falling_circles[:]:
+           falling_circle_box = {'x': fc.x - fc.rad, 'y': fc.y - fc.rad, 'width': fc.rad * 2, 'height': fc.rad * 2}
+           if has_collided(spaceship_box, falling_circle_box):
+               print(f'Game Over! Final Score: {score}')
+               game_over = True
+               glutLeaveMainLoop()
+               return
+    
+    # Draw the circle at the updated position
+    
+    
+    for fr in fireballs:
+        fr['y'] += fr['speed']
+        draw_mpc_circle(fr['x'], fr['y'], fr['rad'], (1, 0.5, 0))
+        
+        #AABB for fireballs
+        fireball_box = {'x' : fr['x'] - fr['rad'], 'y' : fr['y'] - fr['rad'], 'width' : fr['rad'] * 2, 'height': fr['rad'] * 2}
+        if fr['y'] > 500:
+            fireballs.remove(fr)
+            missed_fireballs += 1
+            print(f"missed fireballs: {missed_fireballs}")
+            
+            if missed_fireballs >= 3:
+                print(f'Game Over! Final Score: {score}')
+                glutLeaveMainLoop()
+                break
+    
+    
+    if len(falling_circles) < 5:
+        if random.random() < 0.05:  # Adjust spawn rate (1% chance per frame)
+            spawn_falling_circle()
+            
+    for fc in falling_circles[:]: #fc = falling circle
+        fc.move()
+        fc.update_rad()
+        
+        #AABB for falling circle
+        circle_box = {'x' : fc.x - fc.rad, 'y' : fc.y - fc.rad, 'width' : fc.rad * 2, 'height' : fc.rad * 2}
+        
+        
+        #Remove the circles if it goes off the screen
+        if fc.y <= 0:
+            falling_circles.remove(fc)
+            missed_circles += 1
+            print(f"Missed circles : {missed_circles}")
+            if missed_circles >= 3:
+                print(f"Game Over! Final Score : {score}")
+                glutLeaveMainLoop()
+                return
+        
+        #Check if collision with fireball:
+        for fr in fireballs[:]:
+            fireball_box = {'x' : fr['x'] - fr['rad'], 'y' : fr['y'] - fr['rad'], 'width' : fr['rad'] * 2, 'height': fr['rad'] * 2}
+            
+            if has_collided(circle_box, fireball_box):
+                falling_circles.remove(fc)
+                fireballs.remove(fr)
+                if fc.special == True:
+                    score += 2
+                    print('Bonus Earned')
+                else:
+                    score += 1
+                print(f"Score: {score} !!!")
+                return 
+                   
+         
+      
+    
+    glutSwapBuffers()
+    glutPostRedisplay()
+    
+    
+
+
