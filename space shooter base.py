@@ -117,3 +117,63 @@ def iterate():
     glLoadIdentity()
 
 
+
+def FindZone(dx, dy):
+    if abs(dx) > abs(dy): 
+        if dx > 0 and dy >= 0:
+            return 0  
+        elif dx < 0 and dy >= 0:
+            return 3  
+        elif dx < 0 and dy < 0:
+            return 4  
+        else:
+            return 7  
+    else:  
+        if dx >= 0 and dy > 0:
+            return 1  
+        elif dx < 0 and dy > 0:
+            return 2  
+        elif dx < 0 and dy < 0:
+            return 5  
+        else:
+            return 6  
+         
+
+
+def convert_to_zone_0(x, y, zone):
+    if zone == 0:
+        return x, y
+    if zone == 1:
+        return y, x
+    if zone == 2:
+        return y, -x
+    if zone == 3:
+        return -x, y
+    if zone == 4:
+        return -x, -y
+    if zone == 5:
+        return -y, -x
+    if zone == 6:
+        return -y, x
+    if zone == 7:
+        return x, -y
+ 
+               
+def convert_to_others(x, y, zone):
+    if zone == 0:
+        return x, y
+    if zone == 1:
+        return y, x
+    if zone == 2:
+        return -y, x
+    if zone == 3:
+        return -x, y
+    if zone == 4:
+        return -x, -y
+    if zone == 5:
+        return -y, -x
+    if zone == 6:
+        return y, -x
+    if zone == 7:
+        return x, -y
+  
